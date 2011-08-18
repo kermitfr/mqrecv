@@ -1,4 +1,4 @@
-%define gitrev e915c6a 
+%define gitrev 0b3db2f 
 
 Name:      kermit-mqrecv 
 Summary:   A custom queue consumer using the Mcollective framework 

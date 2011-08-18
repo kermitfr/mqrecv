@@ -1,4 +1,4 @@
-%define gitrev e915c6a 
+%define gitrev 0b3db2f 
 
 Name:      kermit-mqsend
 Summary:   A custom queue publisher using the Mcollective framework 
