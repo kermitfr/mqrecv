@@ -87,11 +87,14 @@ case "$1" in
         echo -n "Stopping $DESC: "
         stop_mqrecv
         ;;
+    restart)
+        restart_mqrecv
+        ;;
     status)
         status_mqrecv
         ;;
     *)
-        echo "Usage: $0 {start|stop|status}" >&2
+        echo "Usage: $0 {start|stop|restart|status}" >&2
         RETVAL=1
         ;;
 esac
