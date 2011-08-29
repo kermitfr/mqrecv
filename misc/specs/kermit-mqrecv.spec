@@ -3,7 +3,7 @@
 Name:      kermit-mqrecv 
 Summary:   A custom queue consumer using the Mcollective framework 
 Version:   1.0
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv3
 Group:     System Tools 
 #Source0:   %{name}-%{version}.tar.gz 
@@ -49,6 +49,8 @@ mkdir -p /usr/local/bin/kermit/queue
 %attr(0755,root,root) /etc/init.d/kermit-mqrecv
 
 %changelog
+* Mon Aug 29 2011 Louis Coilliot
+- with SSL and specific keys
 * Thu Aug 18 2011 Louis Coilliot
 - package splited in two : publisher and consumer
 - no need of rubygem-json (Mcollective provides a JSON parser)

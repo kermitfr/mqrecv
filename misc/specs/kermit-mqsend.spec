@@ -3,7 +3,7 @@
 Name:      kermit-mqsend
 Summary:   A custom queue publisher using the Mcollective framework 
 Version:   1.0
-Release:   1%{?dist}
+Release:   2%{?dist}
 License:   GPLv3
 Group:     System Tools 
 #Source0:   %{name}-%{version}.tar.gz 
@@ -42,6 +42,8 @@ mkdir -p /usr/local/bin/kermit/queue
 /usr/local/bin/kermit/queue/send.rb
 
 %changelog
+* Mon Aug 29 2011 Louis Coilliot
+- with SSL and specific keys
 * Thu Aug 18 2011 Louis Coilliot
 - Initial build
 
