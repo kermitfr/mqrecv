@@ -18,7 +18,6 @@
 # rabbitmqctl list_user_permissions -p '/' mcollective 
 # rabbitmqctl set_permissions -p '/' mcollective ".*" ".*" ".*"
 
-require 'rubygems'
 require 'mcollective'
 require 'json'
 
@@ -33,9 +32,11 @@ oparser = MCollective::Optionparser.new
 options = oparser.parse
 
 config = MCollective::Config.instance
-#configfile = "/etc/mcollective/server.cfg"
-#config.loadconfig(configfile)
 config.loadconfig(options[:config])
+# We need this to be able to pick the key to decode what's sent : 
+config.pluginconf['ssl_client_cert_dir']='/etc/mcollective/ssl/clients/'
+# !!!DON'T!!! put the private key used to encode the sent message on this node.
+# Only the public key, to decode the message.
 
 security = MCollective::PluginManager["security_plugin"]
 security.initiated_by = :node
@@ -49,5 +50,6 @@ loop do
     msg = security.decodemsg(msg)
     fileout="#{TMPDIR}/#{msg[:requestid]}"
     File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
+    puts fileout
 end
 
