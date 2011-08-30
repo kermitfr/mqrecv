@@ -1,4 +1,4 @@
-%define gitrev 0b3db2f 
+%define gitrev cdd6f2f 
 
 Name:      kermit-mqrecv 
 Summary:   A custom queue consumer using the Mcollective framework 
@@ -34,6 +34,7 @@ install -d -m 755 %{buildroot}/usr/local/bin/kermit/queue/
 install -d -m 755 %{buildroot}/etc/init.d
 install recv.rb %{buildroot}/usr/local/bin/kermit/queue
 install recvctl.rb  %{buildroot}/usr/local/bin/kermit/queue
+install genkey.sh  %{buildroot}/usr/local/bin/kermit/queue
 install service/kermit-mqrecv %{buildroot}/etc/init.d 
 
 %clean
@@ -44,7 +45,8 @@ mkdir -p /usr/local/bin/kermit/queue
 
 %files
 %defattr(0644,root,root,-)
-%attr(0755, root, root) /usr/local/bin/kermit/queue/recvctl.rb
+%attr(0755,root,root) /usr/local/bin/kermit/queue/recvctl.rb
+%attr(0755,root,root) /usr/local/bin/kermit/queue/genkey.sh 
 /usr/local/bin/kermit/queue/recv.rb
 %attr(0755,root,root) /etc/init.d/kermit-mqrecv
 
