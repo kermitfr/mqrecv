@@ -52,7 +52,11 @@ connector.connection.subscribe(source)
 
 loop do
     msg = connector.receive
-    msg = security.decodemsg(msg)
+    begin
+        msg = security.decodemsg(msg)
+    rescue RuntimeError
+        next
+    end
     fileout="#{outputdir}/#{msg[:requestid]}"
     File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
     #puts fileout

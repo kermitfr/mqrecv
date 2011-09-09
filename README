@@ -3,4 +3,4 @@ daemon.
 Mcollective uses topics, but here we use a queue that makes the system very 
 resilient and scalable, suited specifically for handling lots of larger chunks 
 of data. 
-We use it to send big messages (50k-200k) with some inventory information.
+We use it to collect big messages (50k-200k) with some inventory information.
