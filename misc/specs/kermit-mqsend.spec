@@ -1,21 +1,21 @@
 %define gitrev 0b3db2f 
 
 Name:      kermit-mqsend
-Summary:   A custom queue publisher using the Mcollective framework 
+Summary:   A custom queue publisher using the MCollective framework 
 Version:   1.0
-Release:   2%{?dist}
+Release:   3%{?dist}
 License:   GPLv3
 Group:     System Tools 
 #Source0:   %{name}-%{version}.tar.gz 
 Source0:   thinkfr-mqrecv-%{gitrev}.tar.gz 
-Requires:  mcollective-common
+Requires:  mcollective-common, rubygem-inifile
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildArch: noarch
 
 %description
 A custom queue publisher reusing all the mc transport wrappers, with a receiving
 daemon.
-Mcollective uses topics, but here we use a queue that makes the system very
+MCollective uses topics, but here we use a queue that makes the system very
 resilient and scalable, suited specifically for handling lots of larger chunks
 of data.
 We use it to send big messages (50k-200k) with some inventory information.
@@ -42,8 +42,10 @@ mkdir -p /usr/local/bin/kermit/queue
 /usr/local/bin/kermit/queue/send.rb
 
 %changelog
+* Fri Sep  9 2011 Louis Coilliot
+- Don't depend on the configuration files of MCollective
 * Mon Aug 29 2011 Louis Coilliot
-- with SSL and specific keys
+- With SSL and specific keys
 * Thu Aug 18 2011 Louis Coilliot
 - Initial build
 

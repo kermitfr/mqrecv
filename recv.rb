@@ -20,23 +20,28 @@
 
 require 'mcollective'
 require 'json'
+require 'inifile'
 
 uid = Etc.getpwnam("nobody").uid
 Process::Sys.setuid(uid)
 
-TMPDIR='/tmp'
+# Kermit parameters
+SECTION = 'amqpqueue'
+MAINCONF = '/etc/kermit/kermit.cfg'
+ini=IniFile.load(MAINCONF, :comment => '#')
+params = ini[SECTION]
 
-source = "/queue/inventory.custom"
+amqpcfg = params['amqpcfg']
+source = params['queuename']
+outputdir = params['outputdir']
 
 oparser = MCollective::Optionparser.new
 options = oparser.parse
+options[:config] = amqpcfg
 
 config = MCollective::Config.instance
 config.loadconfig(options[:config])
-# We need this to be able to pick the key to decode what's sent : 
-config.pluginconf['ssl_client_cert_dir']='/etc/mcollective/ssl/clients/'
-# !!!DON'T!!! put the private key used to encode the sent message on this node.
-# Only the public key, to decode the message.
+
 
 security = MCollective::PluginManager["security_plugin"]
 security.initiated_by = :node
@@ -48,8 +53,8 @@ connector.connection.subscribe(source)
 loop do
     msg = connector.receive
     msg = security.decodemsg(msg)
-    fileout="#{TMPDIR}/#{msg[:requestid]}"
+    fileout="#{outputdir}/#{msg[:requestid]}"
     File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
-    puts fileout
+    #puts fileout
 end
 
