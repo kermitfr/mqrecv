@@ -63,10 +63,8 @@ connector.connect
 #data = "Louis was here"
 #publish(data, security, connector, config)
 
-
 ficname = ARGV[0] || raise("Argument required")
 fic = File.open(ficname, 'r')
 data = JSON.parse(fic.readlines.to_s)
 publish(data, security, connector, config, queuename)
-
 

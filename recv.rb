@@ -55,14 +55,14 @@ loop do
     msg = connector.receive
     begin
         msg = security.decodemsg(msg)
-    rescue RuntimeError
+    rescue RuntimeError, TypeError
         next
     end
     fileout="#{outputdir}/#{msg[:requestid]}"
     basefile = msg[:requestid].gsub(/[a-f0-9]{32}-/,'\1')
     Dir.foreach(outputdir) do |f|
         if f =~ /[a-f0-9]{32}-#{basefile}/
-            # Delete old versions
+            # Delete previous versions
             FileUtils.rm( "#{outputdir}//#{f}" )
         end
     end

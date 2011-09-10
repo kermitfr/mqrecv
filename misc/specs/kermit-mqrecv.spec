@@ -3,7 +3,7 @@
 Name:      kermit-mqrecv 
 Summary:   A custom queue consumer using the MCollective framework 
 Version:   1.0
-Release:   4%{?dist}
+Release:   5%{?dist}
 License:   GPLv3
 Group:     System Tools 
 #Source0:   %{name}-%{version}.tar.gz 
@@ -51,6 +51,9 @@ mkdir -p /usr/local/bin/kermit/queue
 %attr(0755,root,root) /etc/init.d/kermit-mqrecv
 
 %changelog
+* Sat Sep 10 2011 Louis Coilliot
+- Resilient with garbage messages
+- Remove previous versions of sent files with the same name
 * Fri Sep  9 2011 Louis Coilliot
 - Don't depend on the configuration files of MCollective
 * Mon Aug 29 2011 Louis Coilliot
