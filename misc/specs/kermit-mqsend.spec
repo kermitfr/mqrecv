@@ -30,6 +30,7 @@ We use it to send big messages (50k-200k) with some inventory information.
 rm -rf %{buildroot}
 install -d -m 755 %{buildroot}/usr/local/bin/kermit/queue/
 install send.rb %{buildroot}/usr/local/bin/kermit/queue
+install sendlog.rb %{buildroot}/usr/local/bin/kermit/queue
 
 %clean
 rm -rf %{buildroot}

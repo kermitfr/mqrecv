@@ -33,9 +33,11 @@ rm -rf %{buildroot}
 install -d -m 755 %{buildroot}/usr/local/bin/kermit/queue/
 install -d -m 755 %{buildroot}/etc/init.d
 install recv.rb %{buildroot}/usr/local/bin/kermit/queue
-install recvctl.rb  %{buildroot}/usr/local/bin/kermit/queue
+install inventoryctl.rb  %{buildroot}/usr/local/bin/kermit/queue
+install logctl.rb %{buildroot}/usr/local/bin/kermit/queue
 install genkey.sh  %{buildroot}/usr/local/bin/kermit/queue
-install service/kermit-mqrecv %{buildroot}/etc/init.d 
+install service/kermit-inventory %{buildroot}/etc/init.d 
+install service/kermit-log %{buildroot}/etc/init.d 
 
 %clean
 rm -rf %{buildroot}
