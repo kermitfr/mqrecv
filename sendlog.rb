@@ -43,7 +43,7 @@ MAINCONF = '/etc/kermit/kermit.cfg'
 ini=IniFile.load(MAINCONF, :comment => '#')
 params = ini[SECTION]
 amqpcfg = params['amqpcfg']
-queuename = params['inventoryqueuename'] 
+queuename = params['logqueuename'] 
 
 
 # default mcollective client options like --config etc will be valid
@@ -66,7 +66,6 @@ connector.connect
 
 ficname = ARGV[0] || raise("Argument required")
 fic = File.open(ficname, 'r')
-data = JSON.parse(fic.readlines.to_s)
-publish(data, security, connector, config, queuename)
+publish(fic.read, security, connector, config, queuename)
 
 

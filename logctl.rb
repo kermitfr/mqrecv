@@ -16,10 +16,10 @@
 require 'rubygems'
 require 'daemons'
 
-PIDDIR='/tmp'
+PIDDIR='/var/run'
 
 pwd = Dir.pwd
-Daemons.run_proc('recv.rb', :dir_mode => :normal, :dir => PIDDIR ) do
+Daemons.run_proc('recv_log.rb', :dir_mode => :normal, :dir => PIDDIR ) do
 Dir.chdir(pwd)
-exec "ruby /usr/local/bin/kermit/queue/recv.rb"
+exec "ruby /usr/local/bin/kermit/queue/recv.rb /queue/kermit.log"
 end

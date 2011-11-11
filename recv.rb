@@ -23,6 +23,12 @@ require 'json'
 require 'inifile'
 require 'fileutils'
 
+abort('You must give a queue name') unless ARGV[0]
+
+# i.e. '/queue/kermit.inventory'
+source = ARGV[0]
+basequeue = ARGV[0].split('/').last
+
 uid = Etc.getpwnam("nobody").uid
 Process::Sys.setuid(uid)
 
@@ -33,8 +39,9 @@ ini=IniFile.load(MAINCONF, :comment => '#')
 params = ini[SECTION]
 
 amqpcfg = params['amqpcfg']
-source = params['queuename']
-outputdir = params['outputdir']
+outputdir = "#{params['outputdir']}/#{basequeue}"
+
+puts outputdir
 
 oparser = MCollective::Optionparser.new
 options = oparser.parse
@@ -51,6 +58,8 @@ connector = MCollective::PluginManager["connector_plugin"]
 connector.connect
 connector.connection.subscribe(source)
 
+puts 'Begin loop'
+
 loop do
     msg = connector.receive
     begin
@@ -59,6 +68,7 @@ loop do
         next
     end
     fileout="#{outputdir}/#{msg[:requestid]}"
+    puts fileout
     basefile = msg[:requestid].gsub(/[a-f0-9]{32}-/,'\1')
     Dir.foreach(outputdir) do |f|
         if f =~ /[a-f0-9]{32}-#{basefile}/

@@ -1,13 +1,13 @@
 #!/bin/sh
 #
-# kermit-mqrecv      Custom queue consumer using the mcollective framework
+# kermit-log      Custom queue consumer using the mcollective framework
 #
 # chkconfig: - 95 5
 # description: Enable the receiver on a custom AMQP queue set with Mcollective
 #
 
 ### BEGIN INIT INFO
-# Provides:          kermit-mqrecv 
+# Provides:          kermit-log 
 # Required-Start:    $network
 # Required-Stop:     $network
 # Description:       Queue consumer 
@@ -15,9 +15,9 @@
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-NAME=recvctl.rb
+NAME=logctl.rb
 CONTROL=/usr/local/bin/kermit/queue/${NAME}
-DESC=kermit-mqrecv
+DESC=kermit-log
 ROTATE_SUFFIX=
 
 LOCK_FILE=/var/lock/subsys/$NAME

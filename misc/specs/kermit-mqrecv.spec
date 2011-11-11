@@ -3,7 +3,7 @@
 Name:      kermit-mqrecv 
 Summary:   A custom queue consumer using the MCollective framework 
 Version:   1.0
-Release:   5%{?dist}
+Release:   6%{?dist}
 License:   GPLv3
 Group:     System Tools 
 #Source0:   %{name}-%{version}.tar.gz 
@@ -45,12 +45,17 @@ mkdir -p /usr/local/bin/kermit/queue
 
 %files
 %defattr(0644,root,root,-)
-%attr(0755,root,root) /usr/local/bin/kermit/queue/recvctl.rb
+%attr(0755,root,root) /usr/local/bin/kermit/queue/inventoryctl.rb
+%attr(0755,root,root) /usr/local/bin/kermit/queue/logctl.rb
 %attr(0755,root,root) /usr/local/bin/kermit/queue/genkey.sh 
 /usr/local/bin/kermit/queue/recv.rb
-%attr(0755,root,root) /etc/init.d/kermit-mqrecv
+%attr(0755,root,root) /etc/init.d/kermit-inventory
+%attr(0755,root,root) /etc/init.d/kermit-log
+
 
 %changelog
+* Fri Nov 11 2011 Louis Coilliot
+- now there are 2 queues : inventory and log 
 * Sat Sep 10 2011 Louis Coilliot
 - Resilient with garbage messages
 - Remove previous versions of sent files with the same name
