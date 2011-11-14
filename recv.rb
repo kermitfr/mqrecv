@@ -76,6 +76,11 @@ loop do
             FileUtils.rm( "#{outputdir}//#{f}" )
         end
     end
-    File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
+
+    if File.extname(fileout) == ".json"
+        File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
+    else
+        File.open(fileout, 'w') {|f| f.write(msg[:body]) }
+    end
 end
 
