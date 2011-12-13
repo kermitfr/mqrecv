@@ -19,7 +19,7 @@
 # rabbitmqctl set_permissions -p '/' mcollective ".*" ".*" ".*"
 
 require 'mcollective'
-require 'json'
+#require 'json'
 require 'inifile'
 require 'fileutils'
 
@@ -77,10 +77,10 @@ loop do
         end
     end
 
-    if File.extname(fileout) == ".json"
-        File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
-    else
+    #if File.extname(fileout) == ".json"
+    #    File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
+    #else
         File.open(fileout, 'w') {|f| f.write(msg[:body]) }
-    end
+    #end
 end
 

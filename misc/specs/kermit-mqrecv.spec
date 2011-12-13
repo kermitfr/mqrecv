@@ -3,7 +3,7 @@
 Name:      kermit-mqrecv 
 Summary:   A custom queue consumer using the MCollective framework 
 Version:   1.0
-Release:   7%{?dist}
+Release:   8%{?dist}
 License:   GPLv3
 Group:     System Tools 
 #Source0:   %{name}-%{version}.tar.gz 
@@ -56,6 +56,8 @@ mkdir -p /usr/local/bin/kermit/queue
 
 
 %changelog
+* Tue Dec 13 2011 Louis Coilliot
+- send all in raw mode, in the end
 * Mon Nov 14 2011 Louis Coilliot
 - to_json for inventories or not to_json for log files
 * Fri Nov 11 2011 Louis Coilliot
