@@ -19,68 +19,65 @@
 # rabbitmqctl set_permissions -p '/' mcollective ".*" ".*" ".*"
 
 require 'mcollective'
-#require 'json'
 require 'inifile'
 require 'fileutils'
 
-abort('You must give a queue name') unless ARGV[0]
-
-# i.e. '/queue/kermit.inventory'
-source = ARGV[0]
-basequeue = ARGV[0].split('/').last
-
-uid = Etc.getpwnam("nobody").uid
-Process::Sys.setuid(uid)
-
-# Kermit parameters
-SECTION = 'amqpqueue'
-MAINCONF = '/etc/kermit/kermit.cfg'
-ini=IniFile.load(MAINCONF, :comment => '#')
-params = ini[SECTION]
-
-amqpcfg = params['amqpcfg']
-outputdir = "#{params['outputdir']}/#{basequeue}"
-
-puts outputdir
-
-oparser = MCollective::Optionparser.new
-options = oparser.parse
-options[:config] = amqpcfg
-
-config = MCollective::Config.instance
-config.loadconfig(options[:config])
-
-
-security = MCollective::PluginManager["security_plugin"]
-security.initiated_by = :node
-
-connector = MCollective::PluginManager["connector_plugin"]
-connector.connect
-connector.connection.subscribe(source)
-
-puts 'Begin loop'
-
-loop do
-    msg = connector.receive
-    begin
-        msg = security.decodemsg(msg)
-    rescue RuntimeError, TypeError
-        next
-    end
-    fileout="#{outputdir}/#{msg[:requestid]}"
-    puts fileout
-    basefile = msg[:requestid].gsub(/[a-f0-9]{32}-/,'\1')
-    Dir.foreach(outputdir) do |f|
-        if f =~ /[a-f0-9]{32}-#{basefile}/
-            # Delete previous versions
-            FileUtils.rm( "#{outputdir}//#{f}" )
+class Recv
+  def initialize(source='/queue/kermit.inventory')
+    @@SECTION = 'amqpqueue'
+    @@MAINCONF = '/etc/kermit/kermit.cfg'
+    
+    @source=source
+  
+    basequeue=source.split('/').last
+  
+    ini=IniFile.load(@@MAINCONF, :comment => '#')
+    params = ini[@@SECTION]
+    amqpcfg = params['amqpcfg']
+  
+    @outputdir = "#{params['outputdir']}/#{basequeue}"
+  
+    oparser = MCollective::Optionparser.new
+    options = oparser.parse
+    options[:config] = amqpcfg
+    
+    @config = MCollective::Config.instance
+    @config.loadconfig(options[:config])
+    
+    @security = MCollective::PluginManager["security_plugin"]
+    @security.initiated_by = :node
+    
+    @connector = MCollective::PluginManager["connector_plugin"]
+    @connector.connect
+    @connector.connection.subscribe(@source)
+    puts
+  end
+  
+  def mainloop
+    loop do
+        msg = @connector.receive
+        begin
+            msg = @security.decodemsg(msg)
+        rescue RuntimeError, TypeError
+            next
         end
-    end
-
-    #if File.extname(fileout) == ".json"
-    #    File.open(fileout, 'w') {|f| f.write(msg[:body].to_json) }
-    #else
+        fileout="#{@outputdir}/#{msg[:requestid]}"
+        puts "\n#{fileout}"
+        basefile = msg[:requestid].gsub(/[a-f0-9]{32}-/,'\1')
+        Dir.foreach(@outputdir) do |f|
+            if f =~ /[a-f0-9]{32}-#{basefile}/
+                # Delete previous versions
+                FileUtils.rm( "#{@outputdir}//#{f}" )
+            end
+        end
+    
         File.open(fileout, 'w') {|f| f.write(msg[:body]) }
-    #end
+    end
+  end
+end
+
+if __FILE__ == $0
+  r=Recv.new
+  r.mainloop
 end
 

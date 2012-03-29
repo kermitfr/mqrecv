@@ -16,10 +16,25 @@
 require 'rubygems'
 require 'daemons'
 
+$LOAD_PATH << '/usr/local/bin/kermit/queue/'
+require 'recv'
+
 PIDDIR='/var/run'
 
-pwd = Dir.pwd
-Daemons.run_proc('recv_log.rb', :dir_mode => :normal, :dir => PIDDIR ) do
-Dir.chdir(pwd)
-exec "ruby /usr/local/bin/kermit/queue/recv.rb /queue/kermit.log"
+app_options = {
+      :dir_mode => :normal,
+      :dir => PIDDIR,
+}
+
+def setid(uname,gname)
+  uid = Etc.getpwnam(uname).uid
+  gid = Etc.getgrnam(gname).gid
+  Process::Sys.setgid(gid)
+  Process::Sys.setuid(uid)
+end
+
+Daemons.run_proc('kermit-log', app_options) do
+  setid('nobody','nobody')
+  r=Recv.new(source='/queue/kermit.log')
+  r.mainloop
 end
