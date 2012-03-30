@@ -56,7 +56,7 @@ mkdir -p /usr/local/bin/kermit/queue
 
 
 %changelog
-* Fri Mar 30 2011 Louis Coilliot
+* Fri Mar 30 2012 Louis Coilliot
 - fancy display in the system process list 
 * Tue Dec 13 2011 Louis Coilliot
 - send all in raw mode, in the end
