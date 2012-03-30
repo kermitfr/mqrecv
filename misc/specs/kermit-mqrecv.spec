@@ -3,7 +3,7 @@
 Name:      kermit-mqrecv 
 Summary:   A custom queue consumer using the MCollective framework 
 Version:   1.0
-Release:   8%{?dist}
+Release:   9%{?dist}
 License:   GPLv3
 Group:     System Tools 
 #Source0:   %{name}-%{version}.tar.gz 
@@ -56,6 +56,8 @@ mkdir -p /usr/local/bin/kermit/queue
 
 
 %changelog
+* Fri Mar 30 2011 Louis Coilliot
+- fancy display in the system process list 
 * Tue Dec 13 2011 Louis Coilliot
 - send all in raw mode, in the end
 * Mon Nov 14 2011 Louis Coilliot
