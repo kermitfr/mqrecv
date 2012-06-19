@@ -22,8 +22,13 @@ def publish(msg, security, connector, config, queuename)
    reqid = Digest::MD5.hexdigest(
                     "#{config.identity}-#{Time.now.to_f.to_s}-#{target}")
    reqid << "-" << File.basename(ARGV[0])
-   req = security.encoderequest(config.identity, target, msg, reqid, {},
+   if MCollective.version.split('.').first.to_i > 1
+     req = security.encoderequest(config.identity, msg, reqid, "",
                                 "kermit", "mcollective")
+   else
+     req = security.encoderequest(config.identity, target, msg, reqid, {},
+                                "kermit", "mcollective")
+   end
 
    Timeout.timeout(2) do
       begin
